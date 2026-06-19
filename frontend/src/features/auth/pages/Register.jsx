@@ -1,10 +1,24 @@
 import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { useState } from 'react'
 
 const Register = () => {
   const navigate = useNavigate()
-  const handleSubmit = (e) => {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const {loading, handleRegister } = useAuth()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: Implement register logic
+    await handleRegister({ username, email, password })
+    navigate('/')
+  }
+    if(loading){
+    return (<div className="flex items-center justify-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+    </div>)
   }
 
   return (
@@ -41,6 +55,7 @@ const Register = () => {
               type="text"
               name="username"
               placeholder="your_username"
+              onChange={(e)=>{setUsername(e.target.value)}}
               className="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-white/30
                 bg-white/[0.07] border border-white/[0.15]
                 focus:outline-none focus:border-violet-500/70 focus:bg-white/[0.11]
@@ -57,6 +72,7 @@ const Register = () => {
               type="email"
               name="email"
               placeholder="you@example.com"
+              onChange={(e)=>{setEmail(e.target.value)}}
               className="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-white/30
                 bg-white/[0.07] border border-white/[0.15]
                 focus:outline-none focus:border-violet-500/70 focus:bg-white/[0.11]
@@ -78,6 +94,7 @@ const Register = () => {
               type="password"
               name="password"
               placeholder="••••••••"
+              onChange={(e)=>{setPassword(e.target.value)}}
               className="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-white/30
                 bg-white/[0.07] border border-white/[0.15]
                 focus:outline-none focus:border-violet-500/70 focus:bg-white/[0.11]
